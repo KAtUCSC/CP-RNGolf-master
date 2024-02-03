@@ -12,6 +12,7 @@ class Play extends Phaser.Scene {
         this.WALL_SPEED = 250
 
         this.SHOT_COUNT = 0
+        this.SHOT_COUNT_CURRENT = 0
         this.GOALS = 0
         this.SHOT_PERCENT = 0
     }
@@ -72,6 +73,7 @@ class Play extends Phaser.Scene {
             this.ball.body.setVelocityY(Phaser.Math.Between(this.SHOT_VELOCITY_Y_MIN, this.SHOT_VELOCITY_Y_MAX) * shotDirection)
             this.SHOT_COUNT += 1
             this.shots.text = this.SHOT_COUNT
+            this.SHOT_COUNT_CURRENT += 1
         })
 
         // cup/ball collision
@@ -80,7 +82,8 @@ class Play extends Phaser.Scene {
             ball.setPosition(width/2, height - height/10)
             ball.setVelocity(0)
             this.GOALS += 1
-            this.score.text = this.GOALS
+            this.score.text = `hole in ${this.SHOT_COUNT_CURRENT}`
+            this.SHOT_COUNT_CURRENT = 0
             this.SHOT_PERCENT = 100 * this.GOALS / this.SHOT_COUNT
             //console.log(this.SHOT_PERCENT)
             this.percent.text = this.SHOT_PERCENT
@@ -115,6 +118,7 @@ class Play extends Phaser.Scene {
 
         //add score
         scoreConfig.align = 'center'
+        scoreConfig.fixedWidth = 0
         this.score = this.add.text(width/2 - 50, 0, this.GOALS, scoreConfig)
     }
 
